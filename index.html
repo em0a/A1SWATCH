@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A1SWATCH // Stream Core</title>
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="preload" href="css/home.css" as="style">
+  <link rel="preload" href="js/home.js" as="script">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script defer src="js/home.js"></script>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-logo"><i class="fa-solid fa-cube"></i></div> 
+      <div class="brand-text">
+        <h1>A1SWATCH</h1>
+        <span>STREAM ACCESS PROTOCOL</span>
+      </div>
+    </div>
+    
+    <div class="nav-system-status">
+      <span class="status-dot"></span> SYS_STATUS: <span class="status-text">ONLINE // READY_TO_WATCH</span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="active-link"><i class="fa-solid fa-house"></i> Home</a>
+      <div class="search-trigger-wrapper">
+        <input type="text" class="search-bar" placeholder="Execute search query..." onfocus="openSearchModal()" readonly />
+        <i class="fa-solid fa-terminal search-icon"></i>
+      </div>
+    </nav>
+  </header>
+
+  <section class="banner" id="banner">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <span class="terminal-prefix">$ Current status:</span>
+      <h1 id="banner-title">INITIALIZING DATA...</h1>
+      <p class="banner-subtext">Streaming media fragments, bypassing geo-restrictions, and decrypting streams. // A1S{root_access_granted}</p>
+    </div>
+  </section>
+
+  <div class="filter-deck">
+    <div class="filter-group">
+      <label for="global-genre-select"><i class="fa-solid fa-tags"></i> FILTER_GENRE:</label>
+      <select id="global-genre-select" onchange="onGenreChange()">
+        <option value="all">ALL_GENRES // SHOW_ALL</option>
+      </select>
+    </div>
+  </div>
+
+  <main class="matrix-container">
+    <section class="row">
+      <div class="row-header">
+        <i class="fa-solid fa-film row-icon"></i>
+        <h2>MOVIES_MATRIX // TRENDING</h2>
+      </div>
+      <div class="list" id="movies-list"></div>
+    </section>
+
+    <section class="row">
+      <div class="row-header">
+        <i class="fa-solid fa-tv row-icon"></i>
+        <h2>TV_SERIES_CHANNELS // TRENDING</h2>
+      </div>
+      <div class="list" id="tvshows-list"></div>
+    </section>
+
+    <section class="row">
+      <div class="row-header">
+        <i class="fa-solid fa-mask row-icon"></i>
+        <h2>ANIME_SUB_MATRIX // JAPAN_SOURCE</h2>
+      </div>
+      <div class="list" id="anime-list"></div>
+    </section>
+
+    <section class="row">
+      <div class="row-header">
+        <i class="fa-solid fa-hourglass-start row-icon" style="color: var(--accent-red);"></i>
+        <h2>UPCOMING_PREVIEWS // ENCRYPTED_FILES</h2>
+      </div>
+      <div class="list" id="upcoming-list"></div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i> CLOSE_TERMINAL</span>
+      
+      <div class="modal-body">
+        <div class="modal-image-wrapper">
+          <img id="modal-image" src="" alt="" />
+          <div class="glitch-line"></div>
+        </div>
+        <div class="modal-text">
+          <h2 id="modal-title"></h2>
+          <div class="stars" id="modal-rating"></div>
+          <p id="modal-description" class="terminal-prose"></p>
+        </div>
+      </div>
+      
+      <div class="tv-controls" id="tv-controls" style="display: none;">
+        <div class="selector-group">
+          <label for="season-select"><i class="fa-solid fa-folder-open"></i> SEASON:</label>
+          <select id="season-select" onchange="onSeasonChange()"></select>
+        </div>
+        <div class="selector-group">
+          <label for="episode-select"><i class="fa-solid fa-satellite-dish"></i> EPISODE:</label>
+          <select id="episode-select" onchange="changeServer()"></select>
+        </div>
+      </div>
+      
+      <div class="server-selector">
+        <label for="server"><i class="fa-solid fa-server"></i> SELECT INGESTION NODE:</label>
+        <select id="server" onchange="changeServer()">
+          <option value="vidsrc.cc">Node: Vidsrc.cc [Primary]</option>
+          <option value="vidsrc.me">Node: Vidsrc.me [Backup]</option>
+          <option value="player.videasy.net">Node: Videasy.net [Legacy]</option>
+        </select>
+      </div>
+
+      <div class="video-frame-container">
+        <iframe 
+          id="modal-video" 
+          width="100%" 
+          height="400" 
+          frameborder="0" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-modal" id="search-modal">
+    <span class="close" onclick="closeSearchModal()"><i class="fa-solid fa-rectangle-xmark"></i> ABORT_SEARCH</span>
+    <div class="search-box-wrapper">
+      <span class="prompt-symbol">$ query --all:</span>
+      <input type="text" id="search-input" placeholder="Type keywords to look up core database..." oninput="searchTMDB()" />
+    </div>
+    <div class="results" id="search-results"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-protocols">
+        <span class="protocol-badge"><i class="fa-solid fa-network-wired"></i> PROTOCOL: ISITE</span>
+        <span class="protocol-badge"><i class="fa-solid fa-network-wired"></i> PROTOCOL: PUP SMB</span>
+        <span class="protocol-badge"><i class="fa-solid fa-network-wired"></i> PROTOCOL: ACES</span>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="copyright">&copy; 2026 A1SWATCH. Kernel panic prevented.</p>
+      <div class="footer-links">
+        <a href="#">// DISCLAIMER</a>
+        <a href="#">// ABOUT_CORE</a>
+        <a href="#">// SUPPORT</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
